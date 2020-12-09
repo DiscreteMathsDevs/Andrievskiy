@@ -1,0 +1,193 @@
+scp_program -> proc_chains_finder_helper
+(*
+	-> rrel_params: ... 
+    (*
+		-> rrel_1: rrel_in: _graph;;
+        -> rrel_2: rrel_in: _current_chain;;
+        -> rrel_3: rrel_in: _previous_vertex;;
+        -> rrel_4: rrel_in: _current_arc;;
+		-> rrel_5: rrel_out: _result;;
+	*);;
+
+    -> rrel_operators: ... 
+    (*
+
+		-> rrel_init: ..check_if_arc_already_exists_in_chain 
+		(*
+			<- searchElStr3;;
+
+			-> rrel_1: rrel_fixed: rrel_scp_var: _current_chain;;
+			-> rrel_2: rrel_assign: rrel_pos_const_perm: rrel_scp_var: _null_sc_var_2;;
+			-> rrel_3: rrel_assign: rrel_scp_var: _current_arc;;
+
+			=> nrel_then: ..stop_program_execution;;
+			=> nrel_else: ..add_current_arc_to_current_chain;;
+		*);;
+
+        -> ..add_current_arc_to_current_chain
+        (*
+            <- genElStr3;;
+
+            -> rrel_1: rrel_fixed: rrel_scp_var: _current_chain;;
+            -> rrel_2: rrel_assign: rrep_pos_const_perm: rrel_scp_var: _null_sc_var_2;;
+            -> rrel_3: rrel_fixed: rrel_scp_var: _current_arc;;
+
+            => nrel_goto: ..add_current_chain_to_result;;
+        *);;
+
+        -> ..add_current_chain_to_result
+        (*
+            <- genElStr3;;
+
+            -> rrel_1: rrel_fixed: rrel_scp_var: _result;;
+            -> rrel_2: rrel_assign: rrep_pos_const_perm: rrel_scp_var: _null_sc_var_2;;
+            -> rrel_3: rrel_fixed: rrel_scp_var: _current_chain;;
+
+            => nrel_goto: ..get_vertices_set;;
+        *);;
+
+		-> ..get_vertices_set
+		(*
+			<- searchElStr5;;
+			
+			-> rrel_1: rrel_fixed: rrel_scp_var: _graph;;
+			-> rrel_2: rrel_assign: rrel_pos_const_perm: rrel_scp_var: _null_sc_var_2;;
+			-> rrel_3: rrel_assign: rrel_scp_var: _graph_vertices_original;;
+			-> rrel_4: rrel_assign: rrel_pos_const_perm: rrel_scp_var: _null_sc_var_4;;
+			-> rrel_5: rrel_fixed: rrel_scp_const: rrel_nodes;;
+
+			=> nrel_then: ..copy_vertices_set;;
+			=> nrel_else: ..stop_program_execution;;
+		*);;
+
+		-> ..copy_vertices_set
+		(*
+			<- searchSetStr3;;
+
+			-> rrel_1: rrel_fixed: rrel_scp_var: _graph_vertices_original;;
+			-> rrel_2: rrel_assign: rrel_pos_const_perm: rrel_scp_var: _null_sc_var_2;;
+			-> rrel_3: rrel_assign: rrel_scp_var: _null_sc_var_3;;
+			-> rrel_set_3: rrel_assign: rrel_scp_var: _graph_vertices;;
+
+			=> nrel_then: ..get_arcs_set;;
+			=> nrel_else: ..stop_program_execution;;
+		*);;
+
+		-> ..get_arcs_set
+		(*
+			<- searchElStr5;;
+			
+			-> rrel_1: rrel_fixed: rrel_scp_var: _graph;;
+			-> rrel_2: rrel_assign: rrel_pos_const_perm: rrel_scp_var: _null_sc_var_2;;
+			-> rrel_3: rrel_assign: rrel_scp_var: _graph_arcs_original;;
+			-> rrel_4: rrel_assign: rrel_pos_const_perm: rrel_scp_var: _null_sc_var_4;;
+			-> rrel_5: rrel_fixed: rrel_scp_const: rrel_oredges;;
+
+			=> nrel_then: ..copy_arcs_set;;
+			=> nrel_else: ..stop_program_execution;;
+		*);;
+
+		-> ..copy_arcs_set
+		(*
+			<- searchSetStr3;;
+
+			-> rrel_1: rrel_fixed: rrel_scp_var: _graph_arcs_original;;
+			-> rrel_2: rrel_assign: rrel_pos_const_perm: rrel_scp_var: _null_sc_var_2;;
+			-> rrel_3: rrel_assign: rrel_scp_var: _null_sc_var_3;;
+			-> rrel_set_3: rrel_assign: rrel_scp_var: _graph_arcs;;
+
+			=> nrel_then: ..get_current_vertex_from_previous_vertex_through_current_arc;;
+			=> nrel_else: ..stop_program_execution;;
+		*);;
+
+        -> ..get_current_vertex_from_previous_vertex_through_current_arc
+        (*
+            <- searchElStr3;;
+
+            -> rrel_1: rrel_fixed: rrel_scp_var: _previous_vertex;;
+            -> rrel_2: rrel_fixed: rrel_scp_var: _current_arc;;
+            -> rrel_3: rrel_assign: rrel_scp_var: _current_vertex;;
+
+            => nrel_goto: ..get_incident_arcs_for_current_vertex;;
+        *);;
+
+        -> ..get_incident_arcs_for_current_vertex 
+		(*
+			<- searchSetStr5;;
+
+			-> rrel_1: rrel_fixed: rrel_scp_var: _current_vertex;;
+			-> rrel_2: rrel_assign: rrel_edge: rrel_scp_var: _null_sc_var_2;;
+			-> rrel_3: rrel_assign: rrel_scp_var: _null_sc_var_3;;
+			-> rrel_4: rrel_assign: rrel_pos_const_perm: rrel_scp_var: _null_sc_var_4;;
+			-> rrel_5: rrel_fixed: rrel_scp_const: _graph_arcs;;
+			-> rrel_set_2: rrel_assign: rrel_scp_var: _incident_arcs_for_current_vertex;;
+
+			=> nrel_then: ..iterate_over_incident_arcs_for_current_vertext;;
+			=> nrel_else: ..erase_added_arc_and_stop_program_execution;;
+		*);;
+
+		-> ..iterate_over_incident_arcs_for_current_vertext
+		(*
+			<- searchElStr3;;
+
+			-> rrel_1: rrel_fixed: rrel_scp_var: _incident_arcs_for_current_vertex;;
+			-> rrel_2: rrel_assign: rrel_pos_const_perm: rrel_scp_var: _arc_to_iterated_arc;;
+			-> rrel_3: rrel_assign: rrel_scp_var: _next_arc;;
+
+			=> nrel_then: ..erase_arc_to_iterated_arc;;
+			=> nrel_else: ..erase_added_arc_and_stop_program_execution;;
+		*);;
+
+		-> ..erase_arc_to_iterated_arc
+		(*
+			<- eraseEl;;
+
+			-> rrel_1: rrel_fixed: rrel_erase: rrel_scp_var: _arc_to_iterated_arc;;
+
+			=> nrel_goto: ..continue_depth_search;;
+		*);;
+
+		-> ..continue_depth_search
+		(*
+			<- call;;
+
+			-> rrel_1: rrel_fixed: rrel_scp_const: proc_chains_finder_helper;;
+			-> rrel_2: rrel_fixed: rrel_scp_const: ..call_params
+			(*
+				-> rrel_1: rrel_fixed: rrel_scp_var: _graph;;
+				-> rrel_2: rrel_fixed: rrel_scp_var: _current_chain;;
+				-> rrel_3: rrel_fixed: rrel_scp_var: _current_vertex;;
+				-> rrel_4: rrel_fixed: rrel_scp_var: _next_arc;;
+				-> rrel_5: rrel_fixed: rrel_scp_var: _result;;
+			*);;
+			-> rrel_3: rrel_assign: rrel_scp_var: _recursion_call_descriptor;;
+
+			=> nrel_goto: ..wait_recursion_return;;
+		*);;
+
+        -> ..wait_recursion_return
+		(*
+			<- waitReturn;;
+
+			-> rrel_1: rrel_fixed: rrel_scp_var: _recursion_call_descriptor;;
+
+			=> nrel_goto: ..iterate_over_incident_arcs_for_current_vertex;;
+		*);;
+
+        -> ..erase_added_arc_and_stop_program_execution
+        (*
+            <- eraseEl;;
+
+            -> rrel_1: rrel_fixed: rrel_erase: rrel_scp_var: _current_arc;;
+
+			=> nrel_goto: ..stop_program_execution;;
+        *);;
+
+        -> ..stop_program_execution
+        (*
+            <- return;;
+        *);;
+		
+    *);;
+
+*);;

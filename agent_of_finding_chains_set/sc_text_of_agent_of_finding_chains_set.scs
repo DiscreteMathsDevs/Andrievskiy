@@ -1,0 +1,15 @@
+sc_text_of_agent_of_finding_chains_set
+-> rrel_key_sc_element:
+	agent_proc_of_finding_chains_set;
+
+<- scp_program_sc_text;
+
+=> nrel_main_idtf: 
+	[sc-текст агентной scp-программы нахождения множества цепей графа] 
+	(* <- lang_ru;; *);
+	[sc-text scp-agent based program finding chains set of the graph] 
+	(* <- lang_en;; *);;
+
+sc_text_of_agent_of_finding_chains_set 
+= [*^"file://agent_proc_of_finding_chains_set.scsi"*];;
+
